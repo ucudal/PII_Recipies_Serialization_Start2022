@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace Recipies
 {
-    public class Product
+    public class Product : IJsonConvertible
     {
         [JsonConstructor]
         public Product(string description, double unitCost)
@@ -21,6 +21,17 @@ namespace Recipies
         public Product(string json)
         {
             this.LoadFromJson(json);
+        }
+
+        public string ConvertToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public void LoadFromJson(string json)
+        {
+            this.Description = JsonSerializer.Deserialize<Product>(json).Description;
+            this.UnitCost = JsonSerializer.Deserialize<Product>(json).UnitCost;
         }
         public string Description { get; set; }
 
